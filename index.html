@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#173b72">
+<title>โรงงานนักประดิษฐ์ | Inventor Factory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand"><div class="brand-icon">⚙️</div><div><b>INVENTOR FACTORY</b><small>โรงงานนักประดิษฐ์ • วิทยาศาสตร์ ป.4</small></div></div>
+    <div class="top-actions">
+      <button class="icon-btn" id="soundToggle" title="เปิด/ปิดเสียง">🔊 <span>เสียง</span></button>
+      <button class="icon-btn" id="cameraToggle" title="เปิด/ปิดกล้อง">📷 <span>กล้อง</span></button>
+    </div>
+  </header>
+
+  <main>
+    <section id="homeScreen" class="screen active">
+      <div class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow">SCIENCE • EXPLORE • CREATE</div>
+          <h1>โรงงาน<span>นักประดิษฐ์</span></h1>
+          <p>ออกผจญภัยในโลกของวัสดุ ทดลอง คิดค้น และพิชิตภารกิจวิทยาศาสตร์!</p>
+          <div class="hero-buttons">
+            <button class="primary-btn" id="startBtn">🚀 เริ่มภารกิจ</button>
+            <button class="secondary-btn" id="rulesBtn">📘 วิธีเล่น</button>
+          </div>
+          <div class="feature-pills"><span>🖐️ AI ชี้ตอบ</span><span>🎵 เสียงประกอบ</span><span>🏆 สะสมคะแนน</span></div>
+        </div>
+        <div class="factory-art" aria-label="ภาพโรงงานการ์ตูน">
+          <div class="sun"></div><div class="cloud cloud-a"></div><div class="cloud cloud-b"></div>
+          <div class="factory">
+            <div class="smoke">☁️</div><div class="chimney"></div><div class="roof"></div>
+            <div class="factory-body"><div class="window">⚗️</div><div class="window">💡</div><div class="door">🚪</div></div>
+            <div class="gear gear-one">⚙️</div><div class="gear gear-two">⚙️</div>
+          </div>
+          <div class="mascot">👩‍🔬<span>พร้อมทดลอง!</span></div>
+          <div class="floating f1">🧪</div><div class="floating f2">🔬</div><div class="floating f3">✨</div>
+        </div>
+      </div>
+      <div class="home-bottom">
+        <div class="mini-card"><strong>2</strong><span>ด่านภารกิจ</span></div>
+        <div class="mini-card"><strong>7</strong><span>สมบัติของวัสดุ</span></div>
+        <div class="mini-card"><strong>120</strong><span>วินาทีต่อรอบ</span></div>
+      </div>
+    </section>
+
+    <section id="levelScreen" class="screen">
+      <div class="section-heading"><span class="eyebrow">CHOOSE YOUR MISSION</span><h2>เลือกภารกิจของคุณ</h2><p>ทำภารกิจให้สำเร็จเพื่อปลดล็อกความรู้ใหม่</p></div>
+      <div class="level-grid">
+        <article class="level-card level-one"><div class="level-number">01</div><div class="level-emoji">🧰</div><h3>นักประดิษฐ์มือใหม่</h3><p>สำรวจสมบัติพื้นฐานของวัสดุ</p><div class="level-meta">5 คำถาม • ระดับเริ่มต้น</div><button class="primary-btn level-start" data-level="0">เริ่มด่าน 1 →</button></article>
+        <article class="level-card level-two"><div class="level-number">02</div><div class="level-emoji">🏭</div><h3>พิชิตโรงงานวัสดุ</h3><p>ท้าทายความรู้เรื่องวัสดุรอบตัว</p><div class="level-meta">7 คำถาม • ระดับท้าทาย</div><button class="primary-btn level-start" data-level="1">เริ่มด่าน 2 →</button></article>
+      </div>
+      <button class="back-btn" id="levelBack">← กลับหน้าหลัก</button>
+    </section>
+
+    <section id="gameScreen" class="screen">
+      <div class="game-stats">
+        <div class="stat"><small>ภารกิจ</small><b id="missionName">นักประดิษฐ์มือใหม่</b></div>
+        <div class="stat"><small>ข้อที่</small><b><span id="qNumber">1</span>/<span id="qTotal">5</span></b></div>
+        <div class="stat"><small>คะแนน</small><b>⭐ <span id="score">0</span></b></div>
+        <div class="stat timer-stat"><small>เวลาที่เหลือ</small><b>⏱ <span id="timer">02:00</span></b></div>
+      </div>
+      <div class="progress-track"><div id="progressBar"></div></div>
+      <div class="game-layout">
+        <div class="question-panel">
+          <div class="question-tag">🔎 ภารกิจนักวิทยาศาสตร์</div>
+          <h2 id="questionText">วัสดุชนิดใดมีความยืดหยุ่น?</h2>
+          <div class="question-visual" id="questionVisual">🧪</div>
+          <p class="hint" id="questionHint">สังเกตสมบัติของวัสดุ แล้วเลือกคำตอบที่ถูกต้อง</p>
+          <div class="feedback" id="feedback" aria-live="polite"></div>
+          <div class="answer-grid" id="answers"></div>
+        </div>
+        <aside class="side-panel">
+          <div class="camera-card">
+            <div class="camera-head"><b>🖐️ AI HAND TRACKING</b><span id="cameraStatus" class="status off">ปิดกล้อง</span></div>
+            <div class="video-wrap"><video id="webcam" playsinline muted></video><canvas id="handCanvas"></canvas><div class="camera-placeholder" id="cameraPlaceholder"><span>📷</span><b>เปิดกล้องเพื่อใช้มือชี้ตอบ</b><small>หรือใช้เมาส์คลิกคำตอบได้</small></div></div>
+            <div class="camera-controls"><button id="enableCamera" class="camera-btn">เปิดกล้อง</button><button id="disableCamera" class="camera-btn muted-btn">ปิดกล้อง</button></div>
+            <div class="hand-tip">ยกมือให้อยู่ในกรอบกล้อง แล้วใช้นิ้วชี้ค้างบนคำตอบประมาณ 1 วินาที</div>
+          </div>
+          <div class="control-card"><button id="pauseBtn" class="control-btn">⏸ พักเกม</button><button id="quitBtn" class="control-btn">🏠 ออกจากเกม</button></div>
+          <div class="ai-help"><span>💡</span><div><b>AI พร้อมช่วยคุณ!</b><small>ระบบจะไฮไลต์ตัวเลือกเมื่อนิ้วชี้อยู่เหนือคำตอบ</small></div></div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="resultScreen" class="screen">
+      <div class="result-card">
+        <div class="confetti">🎉 ✨ 🏆 ✨ 🎉</div><div class="result-mascot">🧑‍🔬</div>
+        <div class="eyebrow">MISSION COMPLETED</div><h2 id="resultTitle">ยอดเยี่ยมนักประดิษฐ์!</h2><p id="resultMessage">คุณทำภารกิจสำเร็จแล้ว</p>
+        <div class="result-score"><span>คะแนนของคุณ</span><strong id="finalScore">0</strong><small>คะแนน</small></div>
+        <div class="result-stats"><div><b id="correctCount">0</b><span>ตอบถูก</span></div><div><b id="wrongCount">0</b><span>ตอบผิด</span></div><div><b id="timeUsed">0:00</b><span>เวลาที่ใช้</span></div></div>
+        <div class="medal" id="medal">🥇 เหรียญนักประดิษฐ์ทองคำ</div>
+        <div class="result-actions"><button class="primary-btn" id="replayBtn">🔄 เล่นอีกครั้ง</button><button class="secondary-btn" id="chooseAgainBtn">📚 เลือกด่านใหม่</button><button class="secondary-btn" id="homeBtn">🏠 หน้าหลัก</button></div>
+      </div>
+    </section>
+  </main>
+  <footer>INVENTOR FACTORY <span>เรียนรู้ • ทดลอง • สร้างสรรค์</span></footer>
+</div>
+
+<div class="modal hidden" id="rulesModal"><div class="modal-card"><button class="modal-close" id="closeRules">×</button><div class="modal-icon">📘</div><h2>วิธีเล่นเกม</h2><ol><li>เลือกด่านที่ต้องการ แล้วอ่านโจทย์ให้เข้าใจ</li><li>เลือกคำตอบโดยคลิกเมาส์ หรือเปิดกล้องเพื่อใช้มือชี้</li><li>เมื่อนิ้วชี้อยู่บนตัวเลือก ให้ค้างไว้ประมาณ 1 วินาทีเพื่อยืนยัน</li><li>ตอบคำถามให้ได้มากที่สุดก่อนหมดเวลา 2 นาที</li></ol><p class="modal-note">การใช้กล้องเป็นทางเลือก ไม่เปิดกล้องก็เล่นเกมได้ตามปกติ</p><button class="primary-btn" id="gotIt">เข้าใจแล้ว!</button></div></div>
+<div class="modal hidden" id="pauseModal"><div class="modal-card"><div class="modal-icon">⏸️</div><h2>พักเกมชั่วคราว</h2><p>พักสายตาสักครู่ แล้วกลับมาทำภารกิจต่อกันนะ</p><button class="primary-btn" id="resumeBtn">▶ เล่นต่อ</button><button class="secondary-btn" id="pauseQuitBtn">ออกจากเกม</button></div></div>
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body></html>
